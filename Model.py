@@ -41,11 +41,6 @@ def calculate_FCD(stu_tensor,label_tensor,pred_tensor,A_tensor):
     return FCD
 
 def calculate_equal_odds_and_opportunity(y_true, y_pred, sensitive_feature):
-    """
-    计算 Equal Odds 和 Equal Opportunity。
-    返回一个字典，包含 Equal Odds 和 Equal Opportunity 的值。
-    """
-    # 将敏感特征的唯一值作为子群体
     subgroups = set(sensitive_feature.tolist())
     equal_odds = {}
     equal_opportunity = {}
@@ -54,12 +49,12 @@ def calculate_equal_odds_and_opportunity(y_true, y_pred, sensitive_feature):
     equal_acc={}
     neo={}
     for subgroup in subgroups:
-        # 获取当前子群体的索引
+      
         subgroup_idx = sensitive_feature == subgroup
-        # 获取当前子群体下的预测概率或类别
+        
         subgroup_y_pred = y_pred[subgroup_idx]
         subgroup_y_true = y_true[subgroup_idx]
-        # 计算dp
+        
         positive_prob = sum(subgroup_y_pred >= 0.5) / len(subgroup_y_pred)
         true_prob=sum(subgroup_y_true ==1) / len(subgroup_y_true)
         fairCD[subgroup]=positive_prob-true_prob
@@ -69,7 +64,6 @@ def calculate_equal_odds_and_opportunity(y_true, y_pred, sensitive_feature):
         fp = sum((subgroup_y_pred >= 0.5) & (subgroup_y_true == 0))
         tn = sum((subgroup_y_pred < 0.5) & (subgroup_y_true == 0))
         fn = sum((subgroup_y_pred < 0.5) & (subgroup_y_true == 1))
-        # 计算 Equal Odds 和 Equal Opportunity
         neo[subgroup]={'TNR':tn/(tn+fp)}
         equal_odds[subgroup] = {
             'TPR': tp / (tp + fn),
@@ -160,8 +154,8 @@ class NCDM(CDM):
         loss_function = nn.BCELoss()
         optimizer = torch.optim.Adam(self.ncdm_net.parameters(), lr=lr)
         best_auc = 0
-        patience = 5  # 设置early stopping的patience
-        no_improvement = 0  # 记录validation loss没改进的次数
+        patience = 5  
+        no_improvement = 0  
         for epoch_i in range(epoch):
             # print(epoch_i)
             epoch_losses = []
@@ -184,15 +178,12 @@ class NCDM(CDM):
             print("[Epoch %d] average loss: %.6f" % (epoch_i, float(np.mean(epoch_losses))))
             if test_data is not None:
                 y_true, y_pred,auc, accuracy = self.eval(test_data, device=device)
-                # 如果validation accuracy提升,则更新best model
                 if auc > best_auc:
                     best_auc = auc
                     bestmodel=torch.save(self.ncdm_net.state_dict(), "temp_model.snapshot")
                     no_improvement = 0
                 else:
                     no_improvement += 1
-
-                # 如果validation loss连续patience个epoch没改进,提前终止训练
                 if no_improvement == patience:
                     print('Early stopping!')
                     self.ncdm_net.load_state_dict(torch.load("temp_model.snapshot"))
