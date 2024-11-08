@@ -88,8 +88,8 @@ class NCDM(CDM):
         loss_BCE = nn.BCELoss()
         trainer = torch.optim.Adam(self.ncdm_net.parameters(), lr=lr)
         best_auc = 0
-        patience = 5  # 设置early stopping的patience
-        no_improvement = 0  # 记录validation loss没改进的次数
+        patience = 5  
+        no_improvement = 0  
         for e in range(epoch):
             losses, losses1, losses2 = [], [], []
             for batch_data in tqdm(train_data, "Epoch %s" % e):
@@ -120,7 +120,7 @@ class NCDM(CDM):
                 # back propagation
                 trainer.zero_grad()
                 loss.backward()
-                # torch.nn.utils.clip_grad_norm_(self.irt_net.parameters(), max_norm=1.0)  # 梯度裁剪避免梯度爆炸
+                # torch.nn.utils.clip_grad_norm_(self.irt_net.parameters(), max_norm=1.0) 
                 trainer.step()
                 losses.append(loss.mean().item())
                 losses1.append(e_loss.mean().item())
@@ -136,7 +136,6 @@ class NCDM(CDM):
                 else:
                     no_improvement += 1
 
-                # 如果validation loss连续patience个epoch没改进,提前终止训练
                 if no_improvement == patience:
                     print('Early stopping!')
                     self.ncdm_net.load_state_dict(torch.load("temp_model.snapshot"))
@@ -218,8 +217,8 @@ class MIRT(CDM):
         loss_BCE = nn.BCELoss()
         trainer = torch.optim.Adam(self.irt_net.parameters(), lr)
         best_auc = 0
-        patience = 5  # 设置early stopping的patience
-        no_improvement = 0  # 记录validation loss没改进的次数
+        patience = 5  
+        no_improvement = 0 
         fair=1
         for e in range(epoch):
             losses,losses1,losses2 = [],[],[]
@@ -249,7 +248,7 @@ class MIRT(CDM):
                 # back propagation
                 trainer.zero_grad()
                 loss.backward()
-                # torch.nn.utils.clip_grad_norm_(self.irt_net.parameters(), max_norm=1.0)  # 梯度裁剪避免梯度爆炸
+                # torch.nn.utils.clip_grad_norm_(self.irt_net.parameters(), max_norm=1.0)  
                 trainer.step()
                 losses.append(loss.mean().item())
                 losses1.append(e_loss.mean().item())
@@ -257,14 +256,14 @@ class MIRT(CDM):
 
             if test_data is not None:
                 y_true, y_pred, auc, accuracy = self.eval(test_data, device=device)
-                # 如果validation accuracy提升,则更新best model
+           
                 if auc > best_auc:
                     best_auc = auc
                     bestmodel = torch.save(self.irt_net.state_dict(), "temp_model.snapshot")
                     no_improvement = 0
                 else:
                     no_improvement += 1
-                # 如果validation loss连续patience个epoch没改进,提前终止训练
+           
                 if no_improvement >= patience:
                     if np.mean(losses2) > fair or auc <= 0.79:
                         print('Early stopping!')
@@ -389,7 +388,7 @@ class IRT(CDM):
                 # back propagation
                 trainer.zero_grad()
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(self.irt_net.parameters(), max_norm=1.0)#梯度裁剪避免梯度爆炸
+                torch.nn.utils.clip_grad_norm_(self.irt_net.parameters(), max_norm=1.0)
                 trainer.step()
                 losses.append(loss.mean().item())
                 losses1.append(e_loss.mean().item())
@@ -408,7 +407,7 @@ class IRT(CDM):
                     no_improvement = 0
                 else:
                     no_improvement += 1
-                # 如果validation loss连续patience个epoch没改进,提前终止训练
+             
                 if no_improvement >= patience:
                     if np.mean(losses2)>fair or auc<=0.79:
                         print('Early stopping!')
@@ -448,7 +447,7 @@ class LearnableMatrix(nn.Module):
         super(LearnableMatrix, self).__init__()
         self.num = num
         self.k = k
-        # 使用 nn.Parameter 创建可学习的矩阵
+        
         self.matrix = nn.Parameter(torch.rand(num, k))
         self.softmax = nn.Softmax(dim=1)
 
@@ -466,7 +465,7 @@ def Inv_penalty_loss(predict,labels,metrix):
     loss0,loss1=w_0*loss0,w_1*loss1
     loss = loss0.mean() - loss1.mean()
     return loss
-# 优化过程
+
 def optimize(modelA, modelB,train_data,device='cpu',epoch=50):
     modelA.irt_net.eval()
     modelB.train()
