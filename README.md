@@ -4,6 +4,7 @@ the code of paper "Fair Cognitive Diagnosis Without Sensitive Attributes"(FairWI
 PISA data is available in: https://www.oecd.org/pisa/data/
 
 requirements
+
 EduCDM
 torch 1.13.1
 pandas 1.0.1
