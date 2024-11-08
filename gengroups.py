@@ -17,20 +17,14 @@ class LearnableMatrix(nn.Module):
         super(LearnableMatrix, self).__init__()
         self.num = num
         self.k = k
-        # 使用 nn.Parameter 创建可学习的矩阵
-        # self.matrix = nn.Parameter(torch.zeros(num, 2), requires_grad=True)
-        # self.initialize_matrix()
         self.matrix = nn.Parameter(torch.randn(num, k))
         self.softmax = nn.Softmax(dim=1)
 
     def initialize_matrix(self):
-        # 使用 clone 创建一个新的张量，然后对新张量进行原地操作
         self.matrix.data[:, 0] = torch.ones(self.matrix.size(0))
     def forward(self,uid):
-        # 在模型的前向传播中使用该矩阵
         matrix=self.matrix[uid]
         return self.softmax(matrix)
-    # 计算集群公平性
 def Inv_penalty_loss(predict,labels,metrix):
     ids_0 = labels == 0
     ids_1 = labels == 1
@@ -53,15 +47,6 @@ def real_Inv_penalty_loss(predict,labels):
     loss = loss0.mean() - loss1.mean()
     return loss
 
-def drawratio(epoch, ratio_list):
-    plt.plot(range(epoch), ratio_list, marker='o', linestyle='-')
-    # 设置图表标题和坐标轴标签
-    plt.title('折线图示例')
-    plt.xlabel('X 轴标签')
-    plt.ylabel('Y 轴标签')
-    # 显示图表
-    plt.show()
-# 优化过程
 def optimize(modelA, modelB,data,device='cpu',epoch=50):
     modelA.irt_net.to(device)
     modelB.to(device)
