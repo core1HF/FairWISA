@@ -5,7 +5,8 @@ The code for the paper **"Fair Cognitive Diagnosis Without Sensitive Attributes"
 The full version of the code is coming soon.
 
 ## Data
-PISA data is available at: [OECD PISA Data](https://www.oecd.org/pisa/data/)
+PISA data is available at: [PISA Data](https://www.oecd.org/pisa/data/)
+SLP data is available at: [SLP Data](https://aic-fe.bnu.edu.cn/en/data/index.html)
 
 ## Environment Requirements
 - **EduCDM**
