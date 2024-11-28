@@ -1,6 +1,6 @@
 # Fair Cognitive Diagnosis Without Sensitive Attributes (FairWISA)
 
-![FairWISA Framework](path/to/image.pdf)
+![FairWISA Framework](fairwisa.png)
 
 The code for the paper **"Fair Cognitive Diagnosis Without Sensitive Attributes" (FairWISA)**.
 
