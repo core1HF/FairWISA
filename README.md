@@ -1,24 +1,27 @@
-# FairWISA
-The code of paper "Fair Cognitive Diagnosis Without Sensitive Attributes"(FairWISA)
+# Fair Cognitive Diagnosis Without Sensitive Attributes (FairWISA)
 
-The full version of the code is coming soon...
+The code for the paper **"Fair Cognitive Diagnosis Without Sensitive Attributes" (FairWISA)**.
 
-Data: PISA data is available in: https://www.oecd.org/pisa/data/
+The full version of the code is coming soon.
 
-Environment Requirements:
+## Data
+PISA data is available at: [OECD PISA Data](https://www.oecd.org/pisa/data/)
 
-EduCDM
+## Environment Requirements
+- **EduCDM**
+- **torch**: 1.13.1  
+- **pandas**: 1.0.1  
+- **scipy**: 1.4.1  
+- **numpy**: 1.21.6  
+- **tensorboardX**: 2.6  
+- **scikit-learn**: 0.22.1  
+- **tqdm**: 4.42.1  
 
-torch 1.13.1
-
-pandas 1.0.1
-
-scipy 1.4.1
-
-numpy 1.21.6
-
-tensorboardX 2.6
-
-scikit-learn 0.22.1
-
-tqdm 4.42.1
+## How It Runs
+1. Train a Cognitive Diagnosis (CD) model (e.g., IRT) to get the model parameters file: `model.params`.
+2. Execute the following command to generate the grouping matrix file: `groups.params`:
+   ```bash
+   python gengroups.py
+3.Finally, execute the following command to obtain the fair CD model:
+   ```bash
+   python test
