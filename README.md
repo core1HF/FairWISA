@@ -2,7 +2,7 @@
 
 The code for the paper **"Fair Cognitive Diagnosis Without Sensitive Attributes" (FairWISA)**.
 
-The full version of the code is coming soon.
+The full version of the code is coming soon...
 
 ## Data
 PISA data is available at: [PISA Data](https://www.oecd.org/pisa/data/)
