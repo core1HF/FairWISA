@@ -22,6 +22,6 @@ PISA data is available at: [OECD PISA Data](https://www.oecd.org/pisa/data/)
 2. Execute the following command to generate the grouping matrix file: `groups.params`:
    ```bash
    python gengroups.py
-3.Finally, execute the following command to obtain the fair CD model:
+3. Execute the following command to obtain the fair CD model:
    ```bash
    python test
